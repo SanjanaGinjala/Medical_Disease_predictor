@@ -10,9 +10,10 @@ def predict_heart(data):
     return heart_model.predict(data)
 
 def predict_diabetes(data):
+    print("Expected features:", diabetes_model.n_features_in_)
     data = np.array(data).reshape(1,-1)
     return diabetes_model.predict(data)
-
+    
 def predict_parkinsons(data):
     data = np.array(data).reshape(1,-1)
     return parkinsons_model.predict(data)

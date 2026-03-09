@@ -2,29 +2,26 @@ import streamlit as st
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-st.set_page_config(page_title="Medical ML Predictor")
+st.set_page_config(page_title="Medical Disease Predictor")
 
-st.title("🏥 Medical Disease Prediction (ML)")
+st.title("🏥 Medical Disease Prediction System")
 
-tab1, tab2, tab3 = st.tabs([
-    "Diabetes",
-    "Heart Disease",
-    "Parkinsons"
-])
+tab1, tab2, tab3 = st.tabs(["Diabetes", "Heart Disease", "Parkinsons"])
+
 
 # ---------------- DIABETES ----------------
-
 with tab1:
 
     st.header("Diabetes Prediction")
 
-    data = pd.read_csv("diabetes.csv")
+    url = "https://raw.githubusercontent.com/plotly/datasets/master/diabetes.csv"
+    data = pd.read_csv(url)
 
     X = data.drop("Outcome", axis=1)
     y = data["Outcome"]
 
     model = RandomForestClassifier()
-    model.fit(X,y)
+    model.fit(X, y)
 
     preg = st.slider("Pregnancies",0,20,1)
     glucose = st.slider("Glucose",0,200,120)
@@ -37,9 +34,9 @@ with tab1:
 
     if st.button("Predict Diabetes"):
 
-        data_input = [[preg,glucose,bp,skin,insulin,bmi,dpf,age]]
+        input_data = [[preg,glucose,bp,skin,insulin,bmi,dpf,age]]
 
-        result = model.predict(data_input)
+        result = model.predict(input_data)
 
         if result[0] == 1:
             st.error("⚠ High Risk of Diabetes")
@@ -48,18 +45,18 @@ with tab1:
 
 
 # ---------------- HEART ----------------
-
 with tab2:
 
     st.header("Heart Disease Prediction")
 
-    data = pd.read_csv("heart.csv")
+    url = "https://raw.githubusercontent.com/anishathalye/neural-style/master/examples/heart.csv"
+    data = pd.read_csv(url)
 
-    X = data.drop("target",axis=1)
+    X = data.drop("target", axis=1)
     y = data["target"]
 
     model = RandomForestClassifier()
-    model.fit(X,y)
+    model.fit(X, y)
 
     age = st.slider("Age",20,80,40)
     sex = st.selectbox("Sex",[0,1])
@@ -68,11 +65,11 @@ with tab2:
     chol = st.slider("Cholesterol",100,400,200)
     thalach = st.slider("Max Heart Rate",70,210,150)
 
-    if st.button("Predict Heart"):
+    if st.button("Predict Heart Disease"):
 
-        data_input = [[age,sex,cp,trestbps,chol,0,1,thalach,0,1,1,0,2]]
+        input_data = [[age,sex,cp,trestbps,chol,0,1,thalach,0,1,1,0,2]]
 
-        result = model.predict(data_input)
+        result = model.predict(input_data)
 
         if result[0] == 1:
             st.error("⚠ Heart Disease Risk")
@@ -81,26 +78,26 @@ with tab2:
 
 
 # ---------------- PARKINSONS ----------------
-
 with tab3:
 
     st.header("Parkinsons Prediction")
 
-    data = pd.read_csv("parkinsons.csv")
+    url = "https://raw.githubusercontent.com/plotly/datasets/master/parkinsons.csv"
+    data = pd.read_csv(url)
 
-    X = data.drop(["name","status"],axis=1)
+    X = data.drop(["name","status"], axis=1)
     y = data["status"]
 
     model = RandomForestClassifier()
-    model.fit(X,y)
+    model.fit(X, y)
 
     fo = st.slider("Voice Frequency (Fo)",80,260,120)
 
     if st.button("Predict Parkinsons"):
 
-        data_input = [[fo]*22]
+        input_data = [[fo]*22]
 
-        result = model.predict(data_input)
+        result = model.predict(input_data)
 
         if result[0] == 1:
             st.error("⚠ Parkinsons Detected")

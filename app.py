@@ -1,10 +1,7 @@
 import streamlit as st
 from predict import predict_heart, predict_diabetes, predict_parkinsons
 
-st.set_page_config(
-    page_title="Medical Disease Prediction",
-    layout="wide"
-)
+st.set_page_config(page_title="Medical Disease Prediction", layout="wide")
 
 st.title("🏥 Medical Disease Prediction System")
 st.write("AI based system to predict major diseases")
@@ -15,7 +12,7 @@ tab1, tab2, tab3 = st.tabs([
     "🧠 Parkinsons"
 ])
 
-# HEART DISEASE TAB
+# ================= HEART DISEASE =================
 with tab1:
 
     st.header("Heart Disease Prediction")
@@ -27,19 +24,23 @@ with tab1:
         sex = st.selectbox("Sex",[0,1])
         cp = st.selectbox("Chest Pain Type",[0,1,2,3])
         trestbps = st.slider("Resting Blood Pressure",90,200,120)
+        chol = st.slider("Cholesterol",100,400,200)
+        fbs = st.selectbox("Fasting Blood Sugar >120",[0,1])
+        restecg = st.selectbox("Rest ECG",[0,1,2])
 
     with col2:
-        chol = st.slider("Cholesterol",100,400,200)
         thalach = st.slider("Max Heart Rate",70,210,150)
         exang = st.selectbox("Exercise Induced Angina",[0,1])
         oldpeak = st.slider("Old Peak",0.0,6.0,1.0)
+        slope = st.selectbox("Slope",[0,1,2])
+        ca = st.slider("Major Vessels (0-3)",0,3,0)
+        thal = st.selectbox("Thal",[0,1,2,3])
 
     if st.button("Predict Heart Disease"):
 
         result = predict_heart([
-            age,sex,cp,trestbps,chol,
-            0,1,thalach,exang,
-            oldpeak,1,0,2
+            age,sex,cp,trestbps,chol,fbs,restecg,
+            thalach,exang,oldpeak,slope,ca,thal
         ])
 
         if result[0]==1:
@@ -48,7 +49,7 @@ with tab1:
             st.success("✅ Low Risk")
 
 
-# DIABETES TAB
+# ================= DIABETES =================
 with tab2:
 
     st.header("Diabetes Prediction")
@@ -58,14 +59,20 @@ with tab2:
     with col1:
         pregnancies = st.slider("Pregnancies",0,10,1)
         glucose = st.slider("Glucose Level",0,200,120)
+        blood_pressure = st.slider("Blood Pressure",40,140,70)
+        skin_thickness = st.slider("Skin Thickness",0,100,20)
 
     with col2:
+        insulin = st.slider("Insulin Level",0,300,80)
         bmi = st.slider("BMI",10,50,25)
+        pedigree = st.slider("Diabetes Pedigree Function",0.0,2.5,0.5)
         age = st.slider("Age",20,80,30)
 
     if st.button("Predict Diabetes"):
+
         result = predict_diabetes([
-            pregnancies, glucose, bmi, age
+            pregnancies, glucose, blood_pressure, skin_thickness,
+            insulin, bmi, pedigree, age
         ])
 
         if result[0]==1:
@@ -74,15 +81,18 @@ with tab2:
             st.success("✅ No Diabetes")
 
 
-# PARKINSONS TAB
+# ================= PARKINSONS =================
 with tab3:
 
     st.header("Parkinsons Prediction")
+
+    st.write("Enter voice frequency values")
 
     fo = st.slider("MDVP Fo Frequency",80,260,120)
 
     if st.button("Predict Parkinsons"):
 
+        # model expects 22 features
         result = predict_parkinsons([fo]*22)
 
         if result[0]==1:

@@ -15,12 +15,11 @@ pregnancies = st.slider("Pregnancies", 0, 10, 1)
 glucose = st.slider("Glucose Level", 0, 200, 120)
 bmi = st.slider("BMI", 10, 50, 25)
 age = st.slider("Age", 20, 80, 30)
-
 if st.button("Predict"):
 
     try:
-        # prepare input
-        data = np.array([[pregnancies, glucose, bmi, age]])
+        # Model expects 9 features
+        data = np.array([[pregnancies, glucose, bmi, age, 0, 0, 0, 0, 0]])
 
         prediction = model.predict(data)
 
@@ -30,5 +29,5 @@ if st.button("Predict"):
             st.success("✅ Low Risk of Diabetes")
 
     except Exception as e:
-        st.warning("Model input mismatch. Check training features.")
-        st.write(str(e))
+        st.error("Prediction error")
+        st.write(e)

@@ -64,9 +64,8 @@ with tab2:
         age = st.slider("Age",20,80,30)
 
     if st.button("Predict Diabetes"):
-
         result = predict_diabetes([
-            pregnancies,glucose,70,20,80,bmi,0.5,age
+            pregnancies, glucose, bmi, age
         ])
 
         if result[0]==1:
